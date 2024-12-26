@@ -12,8 +12,6 @@
 .swiftpm/
 migrate_working_dir/
 
-
-#confedential files
 google-services.json
 GoogleService-Info.plist
 
