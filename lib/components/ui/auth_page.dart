@@ -1,4 +1,8 @@
+import 'package:firebase_auth_app/components/bloc/auth_bloc.dart';
+import 'package:firebase_auth_app/components/ui/register_page.dart';
+import 'package:firebase_auth_app/components/ui/success_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({super.key});
@@ -16,28 +20,35 @@ class _AuthPageState extends State<AuthPage> {
         title: Text('Firebase Auth'),
       ),
       backgroundColor: Colors.white,
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          return Container(
-              height: constraints.maxHeight * 0.5,
-              padding: EdgeInsets.only(left: 20, right: 20, top: 10),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    'Sign up',
-                    style: TextStyle(fontSize: 30),
-                  ),
-                  TextFormField(
-                    decoration: InputDecoration(
-                        labelText: 'Email', border: OutlineInputBorder()),
-                  ),
-                  TextFormField(
-                      decoration: InputDecoration(
-                          labelText: 'Password', border: OutlineInputBorder()))
-                ],
-              ));
+      body: BlocConsumer<AuthBloc, AuthState>(
+        listener: (context, state) {
+          if (state.status == AuthStateStatus.error) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                behavior: SnackBarBehavior.floating,
+                content: Text(state.errorMessage ?? 'Произошла ошибка'),
+                backgroundColor: Colors.red,
+              ),
+            );
+          }
+        },
+        builder: (context, state) {
+          return LayoutBuilder(
+            builder: (context, constraints) {
+              switch (state.status) {
+                case AuthStateStatus.loading:
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                case AuthStateStatus.success:
+                  return SuccessPage(userCredential: state.userCredential);
+                case AuthStateStatus.initial:
+                  return RegisterPage();
+                case AuthStateStatus.error:
+                  return RegisterPage();
+              }
+            },
+          );
         },
       ),
     );
