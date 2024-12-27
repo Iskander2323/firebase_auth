@@ -1,4 +1,4 @@
-import 'package:firebase_auth_app/auth_repository.dart';
+import 'package:firebase_auth_app/components/repository/auth_repository.dart';
 import 'package:firebase_auth_app/routes.dart';
 import 'package:firebase_auth_app/components/bloc/auth_bloc.dart';
 import 'package:flutter/material.dart';
