@@ -1,4 +1,4 @@
-import 'package:firebase_auth/components/ui/auth_page.dart';
+import 'package:firebase_auth_app/components/ui/auth_page.dart';
 import 'package:go_router/go_router.dart';
 
 final GoRouter routes = GoRouter(

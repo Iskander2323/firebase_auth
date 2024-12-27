@@ -1,15 +1,17 @@
-import 'package:firebase_auth/components/bloc/auth_bloc.dart';
-import 'package:firebase_auth/routes.dart';
+import 'package:firebase_auth_app/auth_repository.dart';
+import 'package:firebase_auth_app/routes.dart';
+import 'package:firebase_auth_app/components/bloc/auth_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class App extends StatelessWidget {
-  const App({super.key});
+  const App({super.key, required this.authRepository});
+  final AuthRepository authRepository;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AuthBloc(),
+      create: (context) => AuthBloc(authRepository: authRepository),
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
         title: 'Firebase Auth',
