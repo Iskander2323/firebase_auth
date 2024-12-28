@@ -24,3 +24,9 @@ final class LoginWithEmailEvent extends AuthEvent {
 final class SignUpWithGoogleEvent extends AuthEvent {}
 
 final class LogOutEvent extends AuthEvent {}
+
+final class AlreadyHaveAccountEvent extends AuthEvent {}
+
+final class RegisterNewAccountEvent extends AuthEvent {}
+
+final class ResetErrorBoolEvent extends AuthEvent {}
