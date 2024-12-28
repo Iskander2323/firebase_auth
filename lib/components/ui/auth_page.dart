@@ -1,4 +1,5 @@
 import 'package:firebase_auth_app/components/bloc/auth_bloc.dart';
+import 'package:firebase_auth_app/components/ui/login_page.dart';
 import 'package:firebase_auth_app/components/ui/register_page.dart';
 import 'package:firebase_auth_app/components/ui/success_page.dart';
 import 'package:flutter/material.dart';
@@ -19,10 +20,11 @@ class _AuthPageState extends State<AuthPage> {
         backgroundColor: Colors.orange,
         title: Text('Firebase Auth'),
       ),
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
-          if (state.status == AuthStateStatus.error) {
+          if (state.isError != null && state.isError!) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 behavior: SnackBarBehavior.floating,
@@ -30,6 +32,7 @@ class _AuthPageState extends State<AuthPage> {
                 backgroundColor: Colors.red,
               ),
             );
+            context.read<AuthBloc>().add(ResetErrorBoolEvent());
           }
         },
         builder: (context, state) {
@@ -43,8 +46,8 @@ class _AuthPageState extends State<AuthPage> {
                 case AuthStateStatus.success:
                   return SuccessPage(userCredential: state.userCredential);
                 case AuthStateStatus.initial:
-                  return RegisterPage();
-                case AuthStateStatus.error:
+                  return LoginPage();
+                case AuthStateStatus.register:
                   return RegisterPage();
               }
             },
