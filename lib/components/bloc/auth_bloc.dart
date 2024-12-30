@@ -72,7 +72,26 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future<void> _signInWithGoogle(
-      SignUpWithGoogleEvent event, Emitter<AuthState> emit) async {}
+      SignUpWithGoogleEvent event, Emitter<AuthState> emit) async {
+    try {
+      final user = await _authRepository.signInWithGoogle();
+      if (user != null) {
+        emit(state.copyWith(
+            status: AuthStateStatus.success, userCredential: user));
+      } else {
+        emit(state.copyWith(
+            status: AuthStateStatus.initial,
+            isError: true,
+            errorMessage: 'Error'));
+      }
+    } catch (e) {
+      log(e.toString());
+      emit(state.copyWith(
+          status: AuthStateStatus.initial,
+          isError: true,
+          errorMessage: e.toString()));
+    }
+  }
 
   Future<void> _logOut(LogOutEvent event, Emitter<AuthState> emit) async {
     emit(state.copyWith(status: AuthStateStatus.loading));

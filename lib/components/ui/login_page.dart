@@ -69,6 +69,12 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               SizedBox(height: 20),
+              ElevatedButton(
+                  onPressed: () {
+                    context.read<AuthBloc>().add(SignUpWithGoogleEvent());
+                  },
+                  child: Text('Sign in with Google')),
+              SizedBox(height: 20),
               TextButton(
                 onPressed: () {
                   context.read<AuthBloc>().add(RegisterNewAccountEvent());
